@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-@include('layouts.head', ['title' => 'FoodCity-Contact'])
+@include('layouts.head', ['title' => 'Food-City: Passenger LogIn'])
 
 <body>
     <div class="hero_area sub_pages">
@@ -10,43 +10,33 @@
         <!-- end header section -->
     </div>
 
+
     <!-- contact section -->
-    <section class="contact_section4 layout_padding">
+    <section class="contact_section1 layout_padding">
         <div class="container">
-            <img src="images/contact.png" alt="" style="height:50px; width:50px" />
+            <img src="images/airplane.png" alt="" style="height:50px; width:50px" />
             <span class="font-weight-bold" style="font-size:xx-large; margin-left:20px">
-                Contact Us
+                Welcome back Passenger!
             </span>
 
             @include('errors.show_errors')
 
             <div class="row">
-                @include('success.msg')
-            </div>
-
-            <div class="row">
                 <div class="col-md-8 mr-auto">
-                    <form action="send_mail" method="POST">
+                    <form method="post" action="{{ route('login') }}">
                         @csrf
                         <div class="contact_form-container">
                             <div>
                                 <div>
-                                    <input type="text" placeholder="Name" name="name">
+                                    <input type="text" name="email" placeholder="Enter your Name">
                                 </div>
+                                <br>
                                 <div>
-                                    <input type="text" placeholder="Phone Number" name="phone">
+                                    <input type="password" name="password" placeholder="Enter the Password">
                                 </div>
-                                <div>
-                                    <input type="email" placeholder="Email" name="email">
-                                </div>
-
-                                <div class="mt-5">
-                                    <input type="text" placeholder="Message" name="message">
-                                </div>
-
                                 <div class="mt-5">
                                     <button type="submit">
-                                        send
+                                        LOG IN
                                     </button>
                                 </div>
                             </div>
@@ -62,5 +52,4 @@
 
     @include('layouts.footer')
 </body>
-
 </html>

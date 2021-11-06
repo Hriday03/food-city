@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'phone', 'address', 'user_type'
     ];
 
     /**
@@ -36,4 +36,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public const USER_TYPE_CUSTOMER = 1;
+    public const USER_TYPE_PASSENGER = 2;
+
+    public function isCustomer()
+    {
+        return $this->user_type == self::USER_TYPE_CUSTOMER;
+    }
+
+    public function isPassenger()
+    {
+        return $this->user_type == self::USER_TYPE_PASSENGER;
+    }
 }

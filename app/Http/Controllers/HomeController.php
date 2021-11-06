@@ -2,44 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use \stdClass;
+use App\Mail\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    //    $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
-    }
-
     public function createUser()
     {
         return view('auth.user_type');
     }
 
-    public function customerHome()
+    public function sendMail(Request $request)
     {
-        return view('customer_home');
+        $object = new \stdClass();
+        
+        $object->name = $request->get('name');
+        $object->phone = $request->get('phone');
+        $object->email = $request->get('email');
+        $object->message = $request->get('message');
+
+        Mail::to($object->email)
+        ->send(new Contact($object));
+
+        return redirect()->back()->with('message', 'Application successfully submitted.Our support team will contact you soon. Thank You..!');
     }
-
-    public function passengerHome()
-    {
-        return view('passenger_home');
-    }
-
-
 }

@@ -13,29 +13,41 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
+Route:: view('/welcome', 'welcome');
+
+Route:: view('/', 'welcome');
+
+Route:: view('/passenger_login', 'auth.passenger_login');
+
+Route:: view('/passenger_register', 'auth.passenger_register');
+
 Route::get('/user-type', function () {
-    return view('auth.user_type');
+    return view('user_type');
 });
-Route::get('/register2', function () {
-    return view('auth.register2');
-});
-Route::get('/login2', function () {
-    return view('auth.login2');
-});
+
 Route::get('/contactUs', function () {
     return view('contact');
 });
+
 Route::get('/aboutUs', function () {
     return view('aboutUs');
 });
 
+Route::post('/send_mail', 'HomeController@sendMail');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/create-user', 'HomeController@createUser')->name('home');
-Route::post('/customer-home','HomeController@customerHome')->name('home');
-Route::post('/passenger-home','HomeController@passengerHome')->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/logout', function () {
+        Auth::logout();
+        return redirect('/');
+    });
+
+    Route::group(['middleware' => 'auth.customer'], function () {
+        Route::get('/customer-home','CustomerController@customerHome');
+    });
+
+    Route::group(['middleware' => 'auth.passenger'], function () {
+        Route::get('/passenger-home','PassengerController@passengerHome');
+    });
+});

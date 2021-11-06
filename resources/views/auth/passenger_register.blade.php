@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
 
-@include('layouts.head', ['title' => 'Food-City: Customer Registration'])
+@include('layouts.head', ['title' => 'FOOD-CITY: Passenger Registration'])
 
 <body>
     <div class="hero_area sub_pages">
         <!-- header section strats -->
         @include('layouts.header')
         <!-- end header section -->
+
     </div>
 
 
     <!-- contact section -->
-    <section class="contact_section2 layout_padding">
+    <section class="contact_section3 layout_padding">
         <div class="container">
-            <img src="images/hamburger.png" alt="" style="height:50px; width:50px" />
+            <img src="images/airplane.png" alt="" style="height:50px; width:50px" />
             <span class="font-weight-bold" style="font-size:xx-large; margin-left:20px">
-                Hi Customer!
+                Hi Passenger!
                 Create your account
             </span>
 
@@ -26,12 +27,13 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-md-8 mr-auto">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         
-                        <input type="hidden" name="token" value="1" />
+                        <input type="hidden" name="token" value="2" />
 
                         <div class="contact_form-container">
                             <div>
