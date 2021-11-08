@@ -24,7 +24,6 @@ class HomeController extends Controller
         $request->validate([
             'name' => 'required|min:3|max:255',
             'phone'  => 'required|min:10|max:10',
-            'address' => 'required|min:5',
         ]);
 
         $object = new \stdClass();
