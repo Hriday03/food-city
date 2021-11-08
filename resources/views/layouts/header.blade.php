@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
             <a class="navbar-brand" href="/">
-                <img src="images/logo.png" alt="" /><span>
+                <img src="../../images/logo.png" alt="" /><span>
                     FOODCITY
                 </span>
             </a>
@@ -15,14 +15,14 @@
                 <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
                     <ul class="navbar-nav  ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="welcome">Home <span
+                            <a class="nav-link" href="/welcome">Home <span
                                     class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="aboutUs"> About Us</a>
+                            <a class="nav-link" href="/aboutUs"> About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contactUs"> Contact Us </a>
+                            <a class="nav-link" href="/contactUs"> Contact Us </a>
                         </li>
 
                     </ul>
@@ -31,11 +31,11 @@
                 <div class="quote_btn-container ml-0 ml-lg-4 d-flex justify-content-center">
                     @if (Auth::user())
                         @if (Auth::user()->isCustomer())
-                            <a href="customer-home">
+                            <a href="/customer/home">
                                 Account
                             </a>
                         @else
-                            <a href="passenger-home">
+                            <a href="/passenger/home">
                                 Account
                             </a>
                         @endif

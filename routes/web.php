@@ -37,17 +37,29 @@ Route::post('/send_mail', 'HomeController@sendMail');
 
 Auth::routes();
 
+Route::get('/verify_account', 'HomeController@accountACtivation');
+
+Route::get('/resend_verify_account', 'HomeController@resendEmailVerification');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', function () {
         Auth::logout();
         return redirect('/');
     });
 
-    Route::group(['middleware' => 'auth.customer'], function () {
-        Route::get('/customer-home','CustomerController@customerHome');
+    Route::group(['prefix' => '/customer', 'middleware' => 'auth.customer'], function () {
+        Route::get('/home','CustomerController@customerHome');
+
+        Route::get('/order_history','CustomerController@customerHome');
+
+        Route::get('/favourit_order','CustomerController@customerHome');
+
+        Route::get('/profile','CustomerController@customerProfile');
+
+        Route::post('/update_profile', 'CustomerController@updateProfile');
     });
 
-    Route::group(['middleware' => 'auth.passenger'], function () {
-        Route::get('/passenger-home','PassengerController@passengerHome');
+    Route::group(['prefix' => '/passenger', 'middleware' => 'auth.passenger'], function () {
+        Route::get('/home','PassengerController@passengerHome');
     });
 });

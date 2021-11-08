@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-@include('customer.layouts.head', ['title' => 'Food-City: Customer Home'])
+@include('customer.layouts.head', ['title' => 'Food-City: Customer Profile'])
 
 <body>
     @include('customer.layouts.sidebar')
@@ -10,7 +10,7 @@
 
     <div class="container">
         <div id="customer-app" style="margin-top: 20px">
-            <order-history></order-history>
+            <customer-profile :user="{{Auth::user()}}"></customer-profile>
         </div>
     </div>
 

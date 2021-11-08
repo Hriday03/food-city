@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+
+use App\Mail\VerifyAccount;
+use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -65,7 +68,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $url = env('APP_URL');
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
@@ -73,14 +78,21 @@ class RegisterController extends Controller
             'user_type' => $data['token'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->remember_token = bcrypt(rand(100, 35609789755));
+        $user->save();
+        
+        Mail::to($user->email)->send(new VerifyAccount($user,  $url));
+
+        return $user;
     }
 
     protected function redirectTo()
     {
         if (Auth::user() && Auth::user()->isPassenger()) {
-            return '/passenger-home';
+            return '/passenger/home';
         } else if (Auth::user() && Auth::user()->isCustomer()) {
-            return '/customer-home';
+            return '/customer/home';
         }
     }
 }

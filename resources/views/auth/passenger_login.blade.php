@@ -39,6 +39,12 @@
                                         LOG IN
                                     </button>
                                 </div>
+                                @if (Route::has('password.request'))
+                                    <a class="btn-link" href="{{ route('password.request') }}"
+                                        style="font-family: verdana;font-size: 17px">
+                                        Forgot Password
+                                    </a>
+                                @endif
                             </div>
 
                         </div>
@@ -52,4 +58,5 @@
 
     @include('layouts.footer')
 </body>
+
 </html>

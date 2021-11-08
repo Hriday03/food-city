@@ -41,9 +41,9 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         if (Auth::user() && Auth::user()->isPassenger()) {
-            return '/passenger-home';
+            return '/passenger/home';
         } else if (Auth::user() && Auth::user()->isCustomer()) {
-            return '/customer-home';
+            return '/customer/home';
         }
     }
 }

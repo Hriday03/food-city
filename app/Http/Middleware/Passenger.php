@@ -20,6 +20,8 @@ class Passenger
         if (Auth::check() && Auth::user()->isCustomer()) {
             throw ValidationException::withMessages(['Passenger' => 'This details is incorrect']);
             return redirect('/login');
+        } else if(Auth::user()->email_verified_at == null){
+            return redirect('/verify_account');
         }
 
         return $next($request);
