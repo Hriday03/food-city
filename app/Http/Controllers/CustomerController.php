@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,17 @@ class CustomerController extends Controller
 
     public function customerHome()
     {
-        return view('customer.customer_home');
+        return redirect('/customer/order_history');
+    }
+
+    public function customerOrder()
+    {
+        return view('customer.customer_order');
+    }
+
+    public function customerFavouritOrders()
+    {
+        return view('customer.customer_favourit_orders');
     }
 
     public function customerProfile(Request $request)
@@ -57,5 +68,56 @@ class CustomerController extends Controller
 
         $user->save();
         return response(['msg' => 'Success'], 200);
+    }
+
+    public function findOrders(Request $request)
+    {
+        $orderType = $request->get('order_type');
+        if ($orderType == 0) {
+            return response([
+                'orders' => Order::all()
+            ], 200);
+        } else {
+            return response([
+                'orders' => Order::where('status', '=', $orderType)->get()
+            ], 200);
+        }
+    }
+
+    public function addTofavourite(Request $request)
+    {
+        $orderId = $request->get('order');
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            $order->is_favourite = 1;
+            $order->save();
+        }
+
+        return response()->json(null, 200);
+    }
+
+    public function customerFavouritOrdersList()
+    {
+        return response([
+            'orders' => Order::active()->where('is_favourite', 1)->get()
+        ], 200);
+    }
+
+    public function removeOrderFromFavourite(Request $request)
+    {
+        $orderId = $request->get('order');
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            $order->is_favourite = 0;
+            $order->save();
+        }
+
+        return response()->json([
+            'orders' => Order::active()->where('is_favourite', 1)->get()
+        ], 200);
     }
 }

@@ -5,15 +5,6 @@
                 <div class="col-6">
                     <h3> Total Orders: <span class="badge badge-primary badge-pill">{{orderLength}}</span></h3><br>
                 </div>
-                <div class="col-2">
-                </div>
-                <div class="col-4">
-                    <select class="form-control" v-model="orderFilter.type" @change="init()">
-                        <option value="0">All Orders</option>
-                        <option value="1">Active Orders</option>
-                        <option value="2">In-active Orders</option>
-                    </select>
-                </div>
             </div>
 
             <div v-if="showLoading" style="text-align:center">
@@ -21,11 +12,8 @@
             </div>
 
             <div v-else class="row">
-                <div class="col-12">
-                    <input type="text" style="height:46px" class="form-control" placeholder="Search by order name" @change="filterOrder()" v-model="orderFilter.name">
-                </div>
-                <div class="col-4" v-show="order.visible" style="margin-top:18px" v-for="(order, index) in allOrders" :key="index">
-                    <div class="card" style="margin-bottom:50px">
+                <div class="col-4" style="margin-top:18px" v-for="(order, index) in allOrders" :key="index">
+                    <div class="card"  style="margin-bottom:50px">
                         <div class="row no-gutters">
                             <div class="col-md-12">
                                 <div class="card-body">
@@ -50,9 +38,9 @@
                                     </label>
 
                                     <hr />
-                                    <button class="btn btn-outline-success" @click="viewOrder(order)">Track</button>
-                                    <button class="btn btn-outline-danger" v-if="order.is_favourite != 1" @click="addToFavorites(order)">
-                                        <i class="fa fa-heart-o" style="font-size:18px;color:red"></i>
+                                     <button class="btn btn-outline-success" @click="viewOrder(order)">View</button>
+                                    <button class="btn btn-outline-danger" @click="removeFavorites(order)">
+                                        Remove
                                     </button>
                                 </div>
                             </div>
@@ -79,13 +67,7 @@
         },
         computed: {
             orderLength() {
-                var len = 0;
-                this.allOrders.forEach((order) => {
-                    if (order.visible) {
-                        len ++;
-                    }
-                });
-                return len;
+                return this.allOrders.length;
             }
         },
         methods:{
@@ -93,66 +75,35 @@
                 setTimeout(() => {
                     this.showLoading = true;
                     this.allOrders = [];
-                    axios.get('/customer/search_orders', {
-                        params: {
-                            'order_type': this.orderFilter.type,
-                        }
-                    }).then(response =>{
+                    axios.get('/customer/favourit_order_list').then(response =>{
                         this.showLoading = false;
-                        this.allOrders = this.prepareorders(response.data.orders);
+                        this.allOrders = response.data.orders;
                     }).catch((error) => {
                         this.showLoading = false;
                         console.log(error);
                     });
                 }, 900);
             },
-            prepareorders(orders) {
-                if (orders.length == 0) {
-                    return [];
-                }
-
-                orders.forEach(order => {
-                    order.visible = true;
-                });
-
-                return orders;
-            },
-            filterOrder() {
-                var orderName = this.orderFilter.name.toString().toLowerCase();
-                if (orderName == '') {
-                    this.allOrders.forEach(order => {
-                        order.visible = true;
-                    });
-                } else {
-                    this.allOrders.forEach(order => {
-                        if (order.order_name.toLowerCase().match(orderName) != null) {
-                            order.visible = true;
-                        } else {
-                            order.visible = false;
-                        }
-                    });
-                }
-            },
+            
             viewOrder(order) {
                 Event.fire('view-order', {
                     order: order,
                 });
             },
-            addToFavorites(order) {
+            removeFavorites(order) {
                 order.is_favourite = true;
                 
-                axios.post('/customer/order_favourite', {
-                    
-                        'order': order.id,
-                    
+                axios.post('/customer/remove_order_favourite', {
+                    order: order.id,
                 }).then(response =>{
                     swal({
                         title: "Success",
-                        text: "Order successfully added into favourite lists.",
+                        text: "Order successfully remove from favourite lists.",
                         icon: "success",
                         buttons: true,
                         dangerMode: true,
                     });
+                    this.allOrders = response.data.orders;
                 }).catch((error) => {
                     this.showLoading = false;
                     console.log(error);

@@ -10,7 +10,7 @@
 
     <div class="container">
         <div id="customer-app" style="margin-top: 20px">
-            <order-history></order-history>
+            
         </div>
     </div>
 

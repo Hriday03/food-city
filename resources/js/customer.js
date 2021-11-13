@@ -8,8 +8,13 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
 Vue.component('order-history', require('./customer/OrderHistory.vue').default);
+
+Vue.component('favourite-order-history', require('./customer/FavouriteOrders.vue').default);
+
+Vue.component('order-details', require('./customer/components/OrderDetails.vue').default);
+
+Vue.component('alert-tost', require('./customer/components/Tost.vue').default);
 
 Vue.component('customer-profile', require('./customer/Profile.vue').default);
 

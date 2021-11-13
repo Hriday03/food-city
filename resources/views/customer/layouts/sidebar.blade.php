@@ -5,11 +5,11 @@
         </span>
     </a>
 
-    <a href="/customer/home">Dashboard</a>
+    {{-- <a href="/customer/home">Dashboard</a> --}}
 
     <a href="/customer/order_history">Order History</a>
 
-    <a href="#clients">Favourite orders</a>
+    <a href="/customer/favourit_order">Favourite orders</a>
 
     <a href="/customer/profile">Customer Profile</a>
 

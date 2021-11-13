@@ -12,7 +12,7 @@
     </div>
 
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-8 card" style="padding: 15px">
         <div id="form">
           <div class="form-group">
             <label for="exampleInputEmail1">Name</label>

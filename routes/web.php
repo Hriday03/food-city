@@ -50,9 +50,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => '/customer', 'middleware' => 'auth.customer'], function () {
         Route::get('/home','CustomerController@customerHome');
 
-        Route::get('/order_history','CustomerController@customerHome');
+        Route::get('/order_history','CustomerController@customerOrder');
 
-        Route::get('/favourit_order','CustomerController@customerHome');
+        Route::get('/search_orders', 'CustomerController@findOrders');
+
+        Route::post('/order_favourite', 'CustomerController@addTofavourite');
+
+        Route::get('/favourit_order','CustomerController@customerFavouritOrders');
+
+        Route::get('/favourit_order_list','CustomerController@customerFavouritOrdersList');
+
+        Route::post('/remove_order_favourite', 'CustomerController@removeOrderFromFavourite');
 
         Route::get('/profile','CustomerController@customerProfile');
 
