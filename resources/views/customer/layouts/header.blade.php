@@ -10,27 +10,12 @@
                     </span>
                 </a>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-right: -73px;">
                     <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
-                        <ul class="navbar-nav  ">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/welcome">
-                                    Home <span class="sr-only">(current)</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/aboutUs"> About Us</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/contactUs"> Contact Us </a>
-                            </li>
-
-                        </ul>
-
                     </div>
                     <div class="quote_btn-container ml-0 ml-lg-4 d-flex justify-content-center">
                         <a href="{{ route('logout') }}">
-                            Log Out
+                            Log Out <i class="fa fa-sign-out" style="font-size:17px"></i>
                         </a>
                     </div>
                 </div>

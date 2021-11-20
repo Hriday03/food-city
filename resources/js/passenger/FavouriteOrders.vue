@@ -75,7 +75,7 @@
                 setTimeout(() => {
                     this.showLoading = true;
                     this.allOrders = [];
-                    axios.get('/customer/favourit_order_list').then(response =>{
+                    axios.get('/passenger/favourit_order_list').then(response =>{
                         this.showLoading = false;
                         this.allOrders = response.data.orders;
                     }).catch((error) => {
@@ -93,7 +93,7 @@
             removeFavorites(order) {
                 order.is_favourite = true;
                 
-                axios.post('/customer/remove_order_favourite', {
+                axios.post('/passenger/remove_order_favourite', {
                     order: order.id,
                 }).then(response =>{
                     swal({

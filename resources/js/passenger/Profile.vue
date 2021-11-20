@@ -11,8 +11,8 @@
       </p>
     </div>
 
-    <div class="row justify-content-center">
-      <div class="col-md-8 card" style="padding: 15px">
+    <div class="row justify-content-center" style="margin-left: 7%">
+      <div class="col-md-12" style="padding: 15px">
         <div id="form">
           <div class="form-group">
             <label for="exampleInputEmail1">Name</label>
@@ -22,7 +22,7 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Name"
-              v-model="customer.name"
+              v-model="passenger.name"
             />
           </div>
 
@@ -34,7 +34,7 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Phone"
-              v-model="customer.phone"
+              v-model="passenger.phone"
             />
           </div>
 
@@ -47,7 +47,7 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Enter email"
-              v-model="customer.email"
+              v-model="passenger.email"
             />
             <small id="emailHelp" class="form-text text-muted">
               We'll never share your email with anyone else.
@@ -61,7 +61,7 @@
               class="form-control"
               id="exampleInputPassword1"
               placeholder="Address"
-              v-model="customer.address"
+              v-model="passenger.address"
             />
           </div>
           <button
@@ -88,7 +88,7 @@ export default {
   props: ["user"],
   data() {
     return {
-      customer: {
+      passenger: {
         name: "",
         email: "",
         phone: "",
@@ -101,17 +101,17 @@ export default {
   },
   methods: {
     loadData() {
-      this.customer.name = this.user.name;
-      this.customer.email = this.user.email;
-      this.customer.phone = this.user.phone;
-      this.customer.address = this.user.address;
+      this.passenger.name = this.user.name;
+      this.passenger.email = this.user.email;
+      this.passenger.phone = this.user.phone;
+      this.passenger.address = this.user.address;
     },
     updateProfile() {
       this.pageProgress = true;
 
       setTimeout(() => {
         axios
-        .post("/customer/update_profile", this.customer)
+        .post("/passenger/update_profile", this.passenger)
         .then((response) => {
           this.pageProgress = false;
           this.successMsg = "Succesfully updated profile";

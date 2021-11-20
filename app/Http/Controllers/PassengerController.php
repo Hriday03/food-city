@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class PassengerController extends Controller
 {
@@ -71,11 +73,11 @@ class PassengerController extends Controller
         $orderType = $request->get('order_type');
         if ($orderType == 0) {
             return response([
-                'orders' => Order::all()
+                'orders' => Order::where('user_id', Auth::id())->get()
             ], 200);
         } else {
             return response([
-                'orders' => Order::where('status', '=', $orderType)->get()
+                'orders' => Order::where('status', '=', $orderType)->where('user_id', Auth::id())->get()
             ], 200);
         }
     }
@@ -97,7 +99,7 @@ class PassengerController extends Controller
     public function passengerFavouritOrdersList()
     {
         return response([
-            'orders' => Order::active()->where('is_favourite', 1)->get()
+            'orders' => Order::active()->where('is_favourite', 1)->where('user_id', Auth::id())->get()
         ], 200);
     }
 

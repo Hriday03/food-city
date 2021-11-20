@@ -68,21 +68,21 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['prefix' => '/passenger', 'middleware' => 'auth.passenger'], function () {
-        Route::get('/home','PassengerController@customerHome');
+        Route::get('/home','PassengerController@passengerHome');
 
-        Route::get('/order_history','PassengerController@customerOrder');
+        Route::get('/order_history','PassengerController@passengerOrder');
 
         Route::get('/search_orders', 'PassengerController@findOrders');
 
         Route::post('/order_favourite', 'PassengerController@addTofavourite');
 
-        Route::get('/favourit_order','PassengerController@customerFavouritOrders');
+        Route::get('/favourit_order','PassengerController@passengerFavouritOrders');
 
-        Route::get('/favourit_order_list','PassengerController@customerFavouritOrdersList');
+        Route::get('/favourit_order_list','PassengerController@passengerFavouritOrdersList');
 
         Route::post('/remove_order_favourite', 'PassengerController@removeOrderFromFavourite');
 
-        Route::get('/profile','PassengerController@customerProfile');
+        Route::get('/profile','PassengerController@passengerProfile');
 
         Route::post('/update_profile', 'PassengerController@updateProfile');
     });

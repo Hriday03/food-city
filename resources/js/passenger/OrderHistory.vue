@@ -93,7 +93,7 @@
                 setTimeout(() => {
                     this.showLoading = true;
                     this.allOrders = [];
-                    axios.get('/customer/search_orders', {
+                    axios.get('/passenger/search_orders', {
                         params: {
                             'order_type': this.orderFilter.type,
                         }
@@ -141,7 +141,7 @@
             addToFavorites(order) {
                 order.is_favourite = true;
                 
-                axios.post('/customer/order_favourite', {
+                axios.post('/passenger/order_favourite', {
                     
                         'order': order.id,
                     
