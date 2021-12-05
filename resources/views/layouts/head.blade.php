@@ -9,6 +9,9 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
+    <!-- Favicons -->
+    <link href="../../images/logo.png" rel="icon">
+
     <title>{{ $title }}</title>
 
     <!-- slider stylesheet -->
