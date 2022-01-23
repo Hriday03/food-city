@@ -15,14 +15,29 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            
             $table->string('order_name');
-            $table->integer('amount');
             $table->string('status');
-            $table->string('razorpay_order_id');
-            $table->string('application_type');
-            $table->unsignedBigInteger('user_id');
+            
+            $table->integer('amount');
             $table->string('promocode')->nullable();
+            
+            $table->string('application_type');
+            $table->string('razorpay_order_id');
+            
             $table->tinyInteger('is_favourite')->nullable();
+
+            $table->text('product');
+            $table->text('shop_address');
+            $table->text('customer_address');
+
+            $table->datetime('confirm_at')->nullable();
+            $table->datetime('pickup_at')->nullable();
+            $table->datetime('delivered_at')->nullable();
+            
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('partner_user_id')->default(0);
+            
             $table->timestamps();
         });
     }

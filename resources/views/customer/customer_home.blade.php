@@ -6,7 +6,7 @@
 <body>
     @include('customer.layouts.sidebar')
 
-    @include('customer.layouts.header')
+    @include('customer.layouts.header', ['title' => 'Food-City: Customer Home'])
 
     <div class="container">
         <div id="customer-app" style="margin-top: 20px">

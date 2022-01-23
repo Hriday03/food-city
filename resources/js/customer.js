@@ -8,6 +8,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.component('place-order', require('./customer/PlaceOrder.vue').default);
+
 Vue.component('order-history', require('./customer/OrderHistory.vue').default);
 
 Vue.component('favourite-order-history', require('./customer/FavouriteOrders.vue').default);

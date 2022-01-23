@@ -4,9 +4,9 @@
     <header class="header_section">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
-                <a class="navbar-brand" href="" style="margin-left:80px">
+                <a class="navbar-brand" href="" style="margin-left:95px">
                     <img src="../../images/hamburger.png" alt="" /><span>
-                        Customer Home Page
+                        {{$title}}
                     </span>
                 </a>
 

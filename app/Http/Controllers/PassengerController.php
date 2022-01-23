@@ -71,15 +71,43 @@ class PassengerController extends Controller
     public function findOrders(Request $request)
     {
         $orderType = $request->get('order_type');
-        if ($orderType == 0) {
+        if($orderType == 1) {
             return response([
-                'orders' => Order::where('user_id', Auth::id())->get()
+                'orders' => Order::where('delivered_at', '=', null)->get()
             ], 200);
         } else {
             return response([
-                'orders' => Order::where('status', '=', $orderType)->where('user_id', Auth::id())->get()
+                'orders' => Order::where('delivered_at', '!=', null)->where('partner_user_id', '=', Auth::id())->get()
             ], 200);
         }
+    }
+
+    public function changeOrderStatus(Request $request)
+    {
+        $orderId = $request->get('order');
+
+        $order = Order::find($orderId);
+
+        if ($order && ($order->confirm_at == null  || ($order->confirm_at != null && $order->partner_user_id == Auth::id()))) {
+            if ($order->confirm_at == null) {
+                $order->confirm_at = now();
+            } else if ($order->pickup_at == null) {
+                $order->pickup_at = now();
+            } else if ($order->delivered_at == null) {
+                $order->delivered_at = now();
+            }
+
+            $order->partner_user_id = Auth::id();
+
+            $order->save();
+
+            return response()->json([
+                'order' => $order
+            ], 200);
+        } else {
+            return response()->json(null, 400);
+        }
+
     }
 
     public function addTofavourite(Request $request)

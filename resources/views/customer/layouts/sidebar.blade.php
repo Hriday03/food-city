@@ -7,6 +7,8 @@
 
     {{-- <a href="/customer/home">Dashboard</a> --}}
 
+    <a href="/customer/place_order">Place Order</a>
+
     <a href="/customer/order_history">Order History</a>
 
     <a href="/customer/favourit_order">Favourite orders</a>

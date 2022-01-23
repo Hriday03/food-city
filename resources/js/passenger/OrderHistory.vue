@@ -9,9 +9,8 @@
                 </div>
                 <div class="col-4">
                     <select class="form-control" v-model="orderFilter.type" @change="init()">
-                        <option value="0">All Orders</option>
                         <option value="1">Active Orders</option>
-                        <option value="2">In-active Orders</option>
+                        <option value="2">Delivered Orders</option>
                     </select>
                 </div>
             </div>
@@ -40,19 +39,24 @@
                                     <br>
 
                                     <label>
-                                        <b>Amount:</b> {{order.amount}}
+                                        <b>Amount:</b> COD
                                     </label>
 
                                     <br />
 
                                     <label>
-                                        <b>Status:</b> confirmed
+                                        <b>Status:</b> 
+                                        <span v-if="order.created_at && !order.confirm_at">Placed</span>
+                                        <span v-if="order.confirm_at && !order.pickup_at">Confirmed</span>
+                                        <span v-if="order.pickup_at && !order.delivered_at">Pickuped</span>
+                                        <span v-if="order.delivered_at">Delivered</span>
                                     </label>
 
-                                    <hr />
-                                    <button class="btn btn-outline-success" @click="viewOrder(order)">Track</button>
-                                    <button class="btn btn-outline-danger" v-if="order.is_favourite != 1" @click="addToFavorites(order)">
-                                        <i class="fa fa-heart-o" style="font-size:18px;color:red"></i>
+                                    <hr v-if="!order.delivered_at"/>
+                                    <button class="btn btn-outline-success" @click="confirmed(order)" v-if="!order.delivered_at">
+                                        <span v-if="!order.confirm_at">Confirmed</span>
+                                        <span v-if="order.confirm_at && !order.pickup_at && !order.delivered_at">Pickuped</span>
+                                        <span v-if="order.confirm_at && order.pickup_at && !order.delivered_at">Delivered</span>
                                     </button>
                                 </div>
                             </div>
@@ -73,7 +77,7 @@
                showLoading: true,
                orderFilter: {
                    name: '',
-                   type: 0,
+                   type: 1,
                }
             }
         },
@@ -133,22 +137,16 @@
                     });
                 }
             },
-            viewOrder(order) {
-                Event.fire('view-order', {
-                    order: order,
-                });
-            },
-            addToFavorites(order) {
+            confirmed(order) {
                 order.is_favourite = true;
                 
-                axios.post('/passenger/order_favourite', {
-                    
-                        'order': order.id,
-                    
-                }).then(response =>{
+                axios.post('/passenger/change_order_status', {
+                    'order': order.id,
+                }).then(response => {
+                    this.order = response.data.order;
                     swal({
                         title: "Success",
-                        text: "Order successfully added into favourite lists.",
+                        text: "Order status successfully changed.",
                         icon: "success",
                         buttons: true,
                         dangerMode: true,

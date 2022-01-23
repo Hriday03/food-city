@@ -10,20 +10,26 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
+                        <h5 class="modal-title" v-if="order.order_partner_name">Delivery Partner:</h5>
+                        <label>{{order.order_partner_name}} / {{order.order_partner_phone}}</label>
                         <div class="row">
                             <div class="col-md-10">
                                 <ul class="timeline">
                                     <li>
-                                        <a target="_blank" href="https://www.totoprayogo.com/#">21 March, 2014</a>
+                                        <a target="_blank" href="#">{{order.created_at}}</a>
                                         <p>Order Placed</p>
                                     </li>
-                                    <li>
-                                        <a href="#">21 March, 2014</a>
+                                    <li v-if="order.confirm_at">
+                                        <a href="#">{{order.confirm_at}}</a>
                                         <p>Confirmed</p>
                                     </li>
-                                    <li>
-                                        <a href="#">21 March, 2014</a>
+                                    <li v-if="order.pickup_at">
+                                        <a href="#">{{order.pickup_at}}</a>
                                         <p>Order Pickuped</p>
+                                    </li>
+                                     <li v-if="order.delivered_at">
+                                        <a href="#">{{order.delivered_at}}</a>
+                                        <p>Delivered</p>
                                     </li>
                                 </ul>
                             </div>

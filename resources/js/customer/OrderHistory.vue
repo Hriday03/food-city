@@ -40,13 +40,13 @@
                                     <br>
 
                                     <label>
-                                        <b>Amount:</b> {{order.amount}}
+                                        <b>Amount:</b> COD
                                     </label>
 
                                     <br />
 
-                                    <label>
-                                        <b>Status:</b> confirmed
+                                    <label v-if="order.delivered_at">
+                                        <b>Status:</b> Delivered
                                     </label>
 
                                     <hr />

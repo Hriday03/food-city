@@ -52,6 +52,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/order_history','CustomerController@customerOrder');
 
+        Route::get('/place_order','CustomerController@placeOrder');
+
+        Route::post('/place_order_save','CustomerController@placeOrderSave');
+
         Route::get('/search_orders', 'CustomerController@findOrders');
 
         Route::post('/order_favourite', 'CustomerController@addTofavourite');
@@ -73,6 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/order_history','PassengerController@passengerOrder');
 
         Route::get('/search_orders', 'PassengerController@findOrders');
+
+        Route::post('/change_order_status', 'PassengerController@changeOrderStatus');
 
         Route::post('/order_favourite', 'PassengerController@addTofavourite');
 

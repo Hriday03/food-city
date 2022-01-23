@@ -73,15 +73,28 @@ class CustomerController extends Controller
     public function findOrders(Request $request)
     {
         $orderType = $request->get('order_type');
+        $orders = [];
+
         if ($orderType == 0) {
-            return response([
-                'orders' => Order::all()
-            ], 200);
+           $orders = Order::all();
         } else {
-            return response([
-                'orders' => Order::where('status', '=', $orderType)->get()
-            ], 200);
+            $orders = Order::where('status', '=', $orderType)->get();
         }
+
+        if (count($orders) > 0) {
+            foreach ($orders as $order) {
+                $user = User::find($order->partner_user_id);
+
+                if ($user) {
+                    $order->order_partner_name = $user->name;
+                    $order->order_partner_phone = $user->phone;
+                }
+            }
+        }
+
+        return response([
+            'orders' => $orders
+        ], 200);
     }
 
     public function addTofavourite(Request $request)
@@ -119,5 +132,49 @@ class CustomerController extends Controller
         return response()->json([
             'orders' => Order::active()->where('is_favourite', 1)->get()
         ], 200);
+    }
+
+    public function placeOrder(Request $request)
+    {
+        return view('customer.place_order');
+    }
+
+    public function placeOrderSave(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3|max:255',
+            'phone'  => 'required|min:10|max:10',
+            'address' => 'required|min:5',
+            'product'=>'required|min:5',
+            'shop_address' => 'required|min:10',
+            'customer_address' => 'required|min:10'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+            ], 422);
+        }
+
+        $order = new Order();
+        $order->order_name = $request->get('product');
+        
+        $order->status = Order::ACTIVE;
+        $order->amount = 0;
+        $order->promocode = '';
+        $order->razorpay_order_id = '';
+
+        $order->application_type = '';
+        $order->is_favourite = 0;
+        
+        $order->product = $request->get('product');
+        $order->shop_address = $request->get('shop_address');
+        $order->customer_address = $request->get('customer_address');
+
+        $order->user_id = Auth::id();
+        
+        $order->save();
+
+        return response()->json(null, 200);
     }
 }
