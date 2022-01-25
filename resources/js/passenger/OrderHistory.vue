@@ -1,6 +1,33 @@
 <template>
     <div class="container" style="margin-left:8%">
-        <div class="order-container justify-content-center">
+        <div v-if="!showContent">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Enter your city</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputPassword1"
+                    placeholder="Enter your city you travel today.!"
+                    v-model="enterCity"
+                    required
+                />
+            </div>
+            <button
+                type="submit"
+                class="btn btn-danger"
+                @click="fetchOrders()"
+                :disabled="pageProgress"
+            >
+                <i
+                class="fa fa-refresh fa-spin"
+                style="font-size: 24px"
+                v-if="pageProgress"
+                ></i>
+                Fetch Orders
+            </button>
+        </div>
+
+        <div v-else class="order-container justify-content-center">
             <div class="row">
                 <div class="col-6">
                     <h3> Total Orders: <span class="badge badge-primary badge-pill">{{orderLength}}</span></h3><br>
@@ -36,6 +63,14 @@
                                         <b>Placed:</b> {{order.created_at}}
                                     </label>
 
+                                    <label>
+                                        <b>Source:</b> {{order.shop_address}}
+                                    </label>
+
+                                    <br>
+                                    <label>
+                                        <b>Destination:</b> {{order.customer_address}}
+                                    </label>
                                     <br>
 
                                     <label>
@@ -73,12 +108,14 @@
     export default {
         data(){
             return {
-               allOrders: [],
-               showLoading: true,
-               orderFilter: {
+                showContent: false,
+                enterCity: null,
+                allOrders: [],
+                showLoading: true,
+                orderFilter: {
                    name: '',
                    type: 1,
-               }
+                }
             }
         },
         computed: {
@@ -99,6 +136,7 @@
                     this.allOrders = [];
                     axios.get('/passenger/search_orders', {
                         params: {
+                            'enterCity': this.enterCity,
                             'order_type': this.orderFilter.type,
                         }
                     }).then(response =>{
@@ -155,10 +193,19 @@
                     this.showLoading = false;
                     console.log(error);
                 });
-            }
+            },
+            fetchOrders() {
+                if (this.enterCity == null) {
+                    alert('Please enter a city');
+                    return;
+                }
+
+                this.showContent = true;
+                this.init();
+            },
         },
         mounted() {
-            this.init();
+            //this.init();
         }
     }
 </script>

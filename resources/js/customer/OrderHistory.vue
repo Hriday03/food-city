@@ -11,7 +11,7 @@
                     <select class="form-control" v-model="orderFilter.type" @change="init()">
                         <option value="0">All Orders</option>
                         <option value="1">Active Orders</option>
-                        <option value="2">In-active Orders</option>
+                        <option value="2">Delivered Orders</option>
                     </select>
                 </div>
             </div>

@@ -75,10 +75,12 @@ class CustomerController extends Controller
         $orderType = $request->get('order_type');
         $orders = [];
 
-        if ($orderType == 0) {
-           $orders = Order::all();
+        if ($orderType == 1) {
+            $orders = Order::whereUserId(Auth::id())->where('delivered_at', '=', NULL)->get();
+        } else  if ($orderType == 2) {
+            $orders = Order::whereUserId(Auth::id())->where('delivered_at', '!=', NULL)->get();
         } else {
-            $orders = Order::where('status', '=', $orderType)->get();
+            $orders = Order::whereUserId(Auth::id())->get();
         }
 
         if (count($orders) > 0) {
