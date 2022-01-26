@@ -116,7 +116,7 @@ class CustomerController extends Controller
     public function customerFavouritOrdersList()
     {
         return response([
-            'orders' => Order::active()->where('is_favourite', 1)->get()
+            'orders' => Order::active()->whereUserId(Auth::id())->where('is_favourite', 1)->get()
         ], 200);
     }
 
