@@ -1,17 +1,36 @@
 <template>
     <div class="container" style="margin-left:8%">
         <div v-if="!showContent">
-            <div class="form-group">
-                <label for="exampleInputPassword1">Enter your city</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                    placeholder="Enter your city you travel today.!"
-                    v-model="enterCity"
-                    required
-                />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Source city</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="exampleInputPassword1"
+                            placeholder="Source"
+                            v-model="enterSourceCity"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Destination city</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="exampleInputPassword1"
+                            placeholder="Destination"
+                            v-model="enterDestinationCity"
+                            required
+                        />
+                    </div>
+                </div>
             </div>
+
             <button
                 type="submit"
                 class="btn btn-danger"
@@ -23,7 +42,7 @@
                 style="font-size: 24px"
                 v-if="pageProgress"
                 ></i>
-                Fetch Orders
+                Check Orders
             </button>
         </div>
 
@@ -108,8 +127,9 @@
     export default {
         data(){
             return {
+                enterSourceCity: null,
+                enterDestinationCity: null,
                 showContent: false,
-                enterCity: null,
                 allOrders: [],
                 showLoading: true,
                 orderFilter: {
@@ -136,7 +156,8 @@
                     this.allOrders = [];
                     axios.get('/passenger/search_orders', {
                         params: {
-                            'enterCity': this.enterCity,
+                            'enterSourceCity': this.enterSourceCity,
+                            'enterDestinationCity': this.enterDestinationCity,
                             'order_type': this.orderFilter.type,
                         }
                     }).then(response =>{
@@ -188,6 +209,8 @@
                         icon: "success",
                         buttons: true,
                         dangerMode: true,
+                    }).then(() => {
+                        location.reload();
                     });
                 }).catch((error) => {
                     this.showLoading = false;
@@ -195,8 +218,8 @@
                 });
             },
             fetchOrders() {
-                if (this.enterCity == null) {
-                    alert('Please enter a city');
+                if (this.enterSourceCity == null || this.enterDestinationCity == null) {
+                    alert('Please Enter Source & Destination');
                     return;
                 }
 

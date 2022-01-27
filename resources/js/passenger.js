@@ -10,7 +10,7 @@ window.Vue = require('vue');
 
 Vue.component('order-history', require('./passenger/OrderHistory.vue').default);
 
-Vue.component('favourite-order-history', require('./passenger/FavouriteOrders.vue').default);
+Vue.component('passenger-wallet', require('./passenger/Wallet.vue').default);
 
 Vue.component('order-details', require('./passenger/components/OrderDetails.vue').default);
 

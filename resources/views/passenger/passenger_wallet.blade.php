@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
 
-@include('passenger.layouts.head', ['title' => 'Food-City: passenger Favourite Order History'])
+@include('passenger.layouts.head', ['title' => 'Food-City: Passenger wallet'])
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
 
 <body>
     @include('passenger.layouts.sidebar')
-
-    @include('passenger.layouts.header')
 
     <div class="container">
         <nav aria-label="breadcrumb" style="margin-left: 9%;margin-top: 20px;width: 98%">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="">Favourit Order</a></li>
+                <li class="breadcrumb-item"><a href="">wallet</a></li>
             </ol>
         </nav>
-        <div id="passenger-app" style="margin-top: 20px">
-            <favourite-order-history></favourite-order-history>
-
-            <order-details></order-details>
+        <div id="passenger-app" style="margin-left: 8%;margin-top: 20px">
+            <passenger-wallet :formatted-amount="{{$formattedAmount}}"></passenger-wallet>
         </div>
     </div>
 

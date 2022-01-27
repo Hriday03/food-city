@@ -66,6 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/remove_order_favourite', 'CustomerController@removeOrderFromFavourite');
 
+        Route::post('/add_points', 'CustomerController@addPoints');
+
         Route::get('/profile','CustomerController@customerProfile');
 
         Route::post('/update_profile', 'CustomerController@updateProfile');
@@ -73,23 +75,19 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => '/passenger', 'middleware' => 'auth.passenger'], function () {
         Route::get('/home','PassengerController@passengerHome');
-
         Route::get('/order_history','PassengerController@passengerOrder');
 
         Route::get('/search_orders', 'PassengerController@findOrders');
-
+        
         Route::post('/change_order_status', 'PassengerController@changeOrderStatus');
-
-        Route::post('/order_favourite', 'PassengerController@addTofavourite');
-
-        Route::get('/favourit_order','PassengerController@passengerFavouritOrders');
-
-        Route::get('/favourit_order_list','PassengerController@passengerFavouritOrdersList');
-
-        Route::post('/remove_order_favourite', 'PassengerController@removeOrderFromFavourite');
-
+        
         Route::get('/profile','PassengerController@passengerProfile');
-
         Route::post('/update_profile', 'PassengerController@updateProfile');
+        
+        Route::get('/wallet','PassengerController@passengerWallet');
+        
+        // Route::post('/order_favourite', 'PassengerController@addTofavourite');
+        // Route::get('/favourit_order_list','PassengerController@passengerFavouritOrdersList');
+        // Route::post('/remove_order_favourite', 'PassengerController@removeOrderFromFavourite');
     });
 });

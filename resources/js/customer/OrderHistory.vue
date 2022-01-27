@@ -9,7 +9,6 @@
                 </div>
                 <div class="col-4">
                     <select class="form-control" v-model="orderFilter.type" @change="init()">
-                        <option value="0">All Orders</option>
                         <option value="1">Active Orders</option>
                         <option value="2">Delivered Orders</option>
                     </select>
@@ -51,8 +50,13 @@
 
                                     <hr />
                                     <button class="btn btn-outline-success" @click="viewOrder(order)">Track</button>
-                                    <button class="btn btn-outline-danger" v-if="order.is_favourite != 1" @click="addToFavorites(order)">
+                                    
+                                    <button class="btn btn-outline-danger" v-if="order.is_favourite != 1 && !order.delivered_at" @click="addToFavorites(order)">
                                         <i class="fa fa-heart-o" style="font-size:18px;color:red"></i>
+                                    </button>
+
+                                    <button style="float:right" class="btn btn-outline-success" v-if="order.delivered_at" @click="accept(order)">
+                                        <i class="fa fa-thumbs-o-up" style="font-size:18px;color:green"></i> Accept
                                     </button>
                                 </div>
                             </div>
@@ -73,7 +77,7 @@
                showLoading: true,
                orderFilter: {
                    name: '',
-                   type: 0,
+                   type: 1,
                }
             }
         },
@@ -141,14 +145,24 @@
             addToFavorites(order) {
                 order.is_favourite = true;
                 
-                axios.post('/customer/order_favourite', {
-                    
-                        'order': order.id,
-                    
-                }).then(response =>{
+                axios.post('/customer/order_favourite', {'order': order.id,}).then(response =>{
                     swal({
                         title: "Success",
                         text: "Order successfully added into favourite lists.",
+                        icon: "success",
+                        buttons: true,
+                        dangerMode: true,
+                    });
+                }).catch((error) => {
+                    this.showLoading = false;
+                    console.log(error);
+                });
+            },
+            accept(order) {
+                 axios.post('/customer/add_points', {'order': order.id,}).then(response =>{
+                    swal({
+                        title: "Success",
+                        text: "Thanks!",
                         icon: "success",
                         buttons: true,
                         dangerMode: true,

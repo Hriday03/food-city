@@ -5,7 +5,7 @@
             <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
                 <a class="navbar-brand" href="" style="margin-left:80px">
                     <img src="../../images/airplane.png" alt="" /><span>
-                        Passenger Home Page
+                        Passenger Dashboard
                     </span>
                 </a>
 

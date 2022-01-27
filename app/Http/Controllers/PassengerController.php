@@ -35,9 +35,20 @@ class PassengerController extends Controller
         return view('passenger.passenger_order');
     }
 
-    public function passengerFavouritOrders()
+    public function passengerWallet()
     {
-        return view('passenger.passenger_favourit_orders');
+        $orders = Order::where('delivered_at', '!=', null)
+        ->where('partner_user_id', '=', Auth::id())
+        ->get();
+
+        $amount = 0;
+        foreach ($orders as $order) {
+            $amount += $order->add_points;
+        }
+
+        $formattedAmount = ($amount > 0) ? number_format($amount) : 0;
+
+        return view('passenger.passenger_wallet', compact('formattedAmount'));
     }
 
     public function passengerProfile(Request $request)
@@ -71,13 +82,21 @@ class PassengerController extends Controller
     public function findOrders(Request $request)
     {
         $orderType = $request->get('order_type');
+        $enterSourceCity = $request->get('enterSourceCity');
+        $enterDestinationCity = $request->get('enterDestinationCity');
+
         if($orderType == 1) {
             return response([
-                'orders' => Order::where('delivered_at', '=', null)->get()
+                'orders' => Order::where('delivered_at', '=', null)
+                ->where('shop_city', $enterSourceCity)
+                ->where('customer_city', $enterDestinationCity)
+                ->get()
             ], 200);
         } else {
             return response([
-                'orders' => Order::where('delivered_at', '!=', null)->where('partner_user_id', '=', Auth::id())->get()
+                'orders' => Order::where('delivered_at', '!=', null)
+                ->where('partner_user_id', '=', Auth::id())
+                ->get()
             ], 200);
         }
     }
@@ -110,40 +129,40 @@ class PassengerController extends Controller
 
     }
 
-    public function addTofavourite(Request $request)
-    {
-        $orderId = $request->get('order');
+    // public function addTofavourite(Request $request)
+    // {
+    //     $orderId = $request->get('order');
 
-        $order = Order::find($orderId);
+    //     $order = Order::find($orderId);
 
-        if ($order) {
-            $order->is_favourite = 1;
-            $order->save();
-        }
+    //     if ($order) {
+    //         $order->is_favourite = 1;
+    //         $order->save();
+    //     }
 
-        return response()->json(null, 200);
-    }
+    //     return response()->json(null, 200);
+    // }
 
-    public function passengerFavouritOrdersList()
-    {
-        return response([
-            'orders' => Order::active()->where('is_favourite', 1)->where('user_id', Auth::id())->get()
-        ], 200);
-    }
+    // public function passengerFavouritOrdersList()
+    // {
+    //     return response([
+    //         'orders' => Order::active()->where('is_favourite', 1)->where('user_id', Auth::id())->get()
+    //     ], 200);
+    // }
 
-    public function removeOrderFromFavourite(Request $request)
-    {
-        $orderId = $request->get('order');
+    // public function removeOrderFromFavourite(Request $request)
+    // {
+    //     $orderId = $request->get('order');
 
-        $order = Order::find($orderId);
+    //     $order = Order::find($orderId);
 
-        if ($order) {
-            $order->is_favourite = 0;
-            $order->save();
-        }
+    //     if ($order) {
+    //         $order->is_favourite = 0;
+    //         $order->save();
+    //     }
 
-        return response()->json([
-            'orders' => Order::active()->where('is_favourite', 1)->get()
-        ], 200);
-    }
+    //     return response()->json([
+    //         'orders' => Order::active()->where('is_favourite', 1)->get()
+    //     ], 200);
+    // }
 }
