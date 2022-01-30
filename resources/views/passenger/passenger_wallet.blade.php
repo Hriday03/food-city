@@ -25,18 +25,18 @@
                 <thead>
                     <tr>
                         <th scope="col">Sl No:</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Is Redeem?</th>
-                        <th scope="col">Date</th>
+                        <th style="text-align:center" scope="col">Amount</th>
+                        <th style="text-align:center" scope="col">Is Redeem?</th>
+                        <th style="text-align:right" scope="col"> Redeem Date/Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($history as $key => $his)    
                         <tr>
                             <th scope="row">{{$key+1}}</th>
-                            <td>{{$his->points}}</td>
-                            <td>{{$his->is_redeem ? 'true' : 'false'}}</td>
-                            <td>{{$his->created_at}}</td>
+                            <td style="text-align:center">Rs {{$his->points}}/-</td>
+                            <td style="text-align:center">{{$his->is_redeem ? 'true' : 'false'}}</td>
+                            <td style="text-align:right">{{ Carbon\Carbon::parse($his->created_at)->tz('Asia/kolkata')->format('D d, M Y h:i A') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

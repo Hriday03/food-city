@@ -55,7 +55,7 @@
                                         <i class="fa fa-heart-o" style="font-size:18px;color:red"></i>
                                     </button>
 
-                                    <button style="float:right" class="btn btn-outline-success" v-if="order.customer_received == null" @click="accept(order)">
+                                    <button style="float:right" class="btn btn-outline-success" v-if="order.delivered_at != null && order.customer_received == null" @click="accept(order)">
                                         <i class="fa fa-thumbs-o-up" style="font-size:18px;color:green"></i> Accept
                                     </button>
                                 </div>
@@ -154,7 +154,7 @@
                         dangerMode: true,
                     }).then(() => {
                         location.reload();
-                    });;
+                    });
                 }).catch((error) => {
                     this.showLoading = false;
                     console.log(error);
@@ -168,6 +168,8 @@
                         icon: "success",
                         buttons: true,
                         dangerMode: true,
+                    }).then(() => {
+                        location.reload();
                     });
                 }).catch((error) => {
                     this.showLoading = false;

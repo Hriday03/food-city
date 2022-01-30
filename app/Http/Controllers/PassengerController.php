@@ -33,9 +33,9 @@ class PassengerController extends Controller
 
     public function passengerOrder()
     {
-        $confirmedOrders = Order::where('confirm_at', '<>' , null)->where('delivered_at', '=' , null)->where('user_id', Auth::id())->get();
+        $cdOrders = Order::where('confirm_at', '<>' , null)->where('partner_user_id', Auth::id())->get();
 
-        return view('passenger.passenger_order', compact('confirmedOrders'));
+        return view('passenger.passenger_order', compact('cdOrders'));
     }
 
     public function findOrders(Request $request)
@@ -66,7 +66,7 @@ class PassengerController extends Controller
 
         $order = Order::find($orderId);
 
-        if ($order && ($order->confirm_at == null  || ($order->confirm_at != null && $order->user_id == Auth::id()))) {
+        if ($order && ($order->confirm_at == null  || ($order->confirm_at != null && $order->partner_user_id == Auth::id()))) {
             if ($order->confirm_at == null) {
                 $order->confirm_at = now();
             } else if ($order->pickup_at == null) {
@@ -75,7 +75,7 @@ class PassengerController extends Controller
                 $order->delivered_at = now();
             }
 
-            $order->user_id = Auth::id();
+            $order->partner_user_id = Auth::id();
 
             $order->save();
 
