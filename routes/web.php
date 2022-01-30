@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/update_profile', 'PassengerController@updateProfile');
         
         Route::get('/wallet','PassengerController@passengerWallet');
+        Route::post('/wallet_redeem','PassengerController@passengerWalletRedeem');
         
         // Route::post('/order_favourite', 'PassengerController@addTofavourite');
         // Route::get('/favourit_order_list','PassengerController@passengerFavouritOrdersList');

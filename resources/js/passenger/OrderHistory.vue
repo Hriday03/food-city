@@ -120,11 +120,59 @@
                 </div>
             </div>
         </div>
+
+
+        <hr>
+        <!-- Confirmed Orders -->
+        <h3>Confirmed Orders</h3>
+        <div style="margin-bottom:50px">
+            <div class="row no-gutters">
+                <div class="col-md-4" v-for="(order, key) in confirmedOrders" :key="key">
+                    <div class="card"  style="padding: 10px">
+                        <h5 class="card-title">
+                            {{key+1}}. {{order.order_name}}
+                        </h5>
+
+                        <label>
+                            <b>Placed:</b> {{order.created_at}}
+                        </label>
+
+                        <label>
+                            <b>Source:</b> {{order.shop_address}}
+                        </label>
+
+                        <label>
+                            <b>Destination:</b> {{order.customer_address}}
+                        </label>
+                      
+                        <label>
+                            <b>Amount:</b> COD
+                        </label>
+
+                        <label>
+                            <b>Status:</b> 
+                            <span v-if="order.created_at && !order.confirm_at">Placed</span>
+                            <span v-if="order.confirm_at && !order.pickup_at">Confirmed</span>
+                            <span v-if="order.pickup_at && !order.delivered_at">Pickuped</span>
+                            <span v-if="order.delivered_at">Delivered</span>
+                        </label>
+
+                        <hr v-if="!order.delivered_at"/>
+                        <button class="btn btn-outline-success" @click="confirmed(order)" v-if="!order.delivered_at">
+                            <span v-if="!order.confirm_at">Confirmed</span>
+                            <span v-if="order.confirm_at && !order.pickup_at && !order.delivered_at">Pickuped</span>
+                            <span v-if="order.confirm_at && order.pickup_at && !order.delivered_at">Delivered</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
     import axios from 'axios';
     export default {
+        props:['confirmedOrders'],
         data(){
             return {
                 enterSourceCity: null,

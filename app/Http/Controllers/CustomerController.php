@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Order;
+use App\WaletHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -189,6 +190,12 @@ class CustomerController extends Controller
         $order = Order::find($orderId);
 
         if ($order) {
+            $history = new WaletHistory();
+            $history->order_id = $order->id;
+            $history->user_id = $order->partner_user_id;
+            $history->points = 100;
+            $history->save();
+
             $order->customer_received = now();
             $order->add_points = 100;
             $order->save();

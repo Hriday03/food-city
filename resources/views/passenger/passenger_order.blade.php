@@ -17,7 +17,7 @@
         </nav>
 
         <div id="passenger-app" style="margin-top: 20px">
-            <order-history></order-history>
+            <order-history :confirmed-orders="{{$confirmedOrders}}"></order-history>
 
             <order-details></order-details>
 

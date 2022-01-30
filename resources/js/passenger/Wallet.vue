@@ -52,13 +52,41 @@
                     </li>
                 </ul>
                 <br/>
-                <a href="" :disabled="(formattedAmount <= 0)" class="btn btn-success btn-lg btn-block" role="button">Click to proceed</a>
+                <button :disabled="(formattedAmount <= 0)" class="btn btn-success btn-lg btn-block" @click="redeem()" role="button">
+                      <i class="fa fa-refresh fa-spin" style="font-size: 24px" v-if="pageProgress"></i>
+                        Click to proceed
+                </button>
             </div>
         </div>
     </div>
 </template>
 <script>
     export default {
-        props:['formattedAmount']
+        props:['formattedAmount'],
+        data() {
+            return{
+                pageProgress: false
+            }
+        },
+        methods: {
+            redeem() {
+                this.pageProgress = true;
+                axios.post('/passenger/wallet_redeem').then(response =>{
+                    this.pageProgress = false;
+                    swal({
+                        title: "Success",
+                        text: "Redeem successfully",
+                        icon: "success",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then(() => {
+                        location.reload();
+                    });
+                }).catch((error) => {
+                    this.pageProgress = false;
+                    console.log(error);
+                });   
+            }
+        }
     }
 </script>
