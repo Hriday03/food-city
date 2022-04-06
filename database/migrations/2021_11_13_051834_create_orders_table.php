@@ -29,12 +29,17 @@ class CreateOrdersTable extends Migration
 
             $table->text('product');
             $table->text('shop_address');
+            $table->string('shop_city');
             $table->text('customer_address');
+            $table->string('customer_city');
 
             $table->datetime('confirm_at')->nullable();
             $table->datetime('pickup_at')->nullable();
             $table->datetime('delivered_at')->nullable();
-            
+
+            $table->datetime('customer_received')->nullable();
+            $table->integer('add_points')->nullable();
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('partner_user_id')->default(0);
             

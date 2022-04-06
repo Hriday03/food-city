@@ -12,7 +12,7 @@
     </div>
 
     <div class="row justify-content-center">
-      <div class="col-md-10 card" style="padding: 15px; margin:4%">
+      <div class="col-md-10 card" style="padding: 15px; margin: 4%">
         <div id="form">
           <div class="form-group">
             <label for="exampleInputEmail1">Name</label>
@@ -27,36 +27,42 @@
             />
           </div>
 
-          <div class="form-group">
-            <label for="exampleInputEmail1">Phone</label>
-            <input
-              disabled
-              type="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Phone"
-              v-model="customer.phone"
-            />
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Phone</label>
+                <input
+                  disabled
+                  type="email"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Phone"
+                  v-model="customer.phone"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">    
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input
+                  disabled
+                  type="email"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                  v-model="customer.email"
+                />
+                <small id="emailHelp" class="form-text text-muted">
+                  We'll never share your email with anyone else.
+                </small>
+              </div>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input
-              disabled
-              type="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-              v-model="customer.email"
-            />
-            <small id="emailHelp" class="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
-          </div>
 
-           <div class="form-group">
+          <div class="form-group">
             <label for="exampleInputPassword1">Product</label>
             <input
               type="text"
@@ -67,28 +73,59 @@
             />
           </div>
 
-          <div class="form-group">
-            <label for="exampleInputPassword1">Shop Address</label>
-            <input
-              type="text"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Enter source shop address"
-              v-model="customer.shop_address"
-            />
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Shop Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Shop address"
+                  v-model="customer.shop_address"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Shop City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputPassword1"
+                    placeholder="Shop city"
+                    v-model="customer.shop_city"
+                  />
+                </div>
+            </div>
+          </div>  
+        
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Customer Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Customer address"
+                  v-model="customer.customer_address"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Customer City</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Customer city"
+                  v-model="customer.customer_city"
+                />
+              </div>
+            </div>
           </div>
-
-           <div class="form-group">
-            <label for="exampleInputPassword1">Customer Address</label>
-            <input
-              type="text"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Enter customer address"
-              v-model="customer.customer_address"
-            />
-          </div>
-
 
           <button
             type="submit"
@@ -121,6 +158,9 @@ export default {
         product: "",
         shop_address: "",
         customer_address: "",
+        shop_city: '',
+        customer_city:''
+
       },
       pageProgress: false,
       errorMsg: null,
@@ -138,15 +178,16 @@ export default {
       this.pageProgress = true;
 
       setTimeout(() => {
-        axios.post("/customer/place_order_save", this.customer)
+        axios
+          .post("/customer/place_order_save", this.customer)
           .then((response) => {
             this.pageProgress = false;
             this.successMsg = "Place Order was successfully";
             this.errorMsg = null;
 
             setTimeout(() => {
-              location.replace('/customer/order_history');
-            })
+              location.replace("/customer/order_history");
+            });
           })
           .catch((error) => {
             this.successMsg = null;

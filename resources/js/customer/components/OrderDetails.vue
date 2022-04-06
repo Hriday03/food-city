@@ -11,7 +11,9 @@
                 <div class="modal-body">
                     <div class="container">
                         <h5 class="modal-title" v-if="order.order_partner_name">Delivery Partner:</h5>
-                        <label>{{order.order_partner_name}} / {{order.order_partner_phone}}</label>
+                        <label>
+                            {{order.order_partner_name}} <span v-if="order.order_partner_phone">,</span>  {{order.order_partner_phone}}
+                        </label>
                         <div class="row">
                             <div class="col-md-10">
                                 <ul class="timeline">

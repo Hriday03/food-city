@@ -9,7 +9,7 @@
 
     <a href="/passenger/order_history">Order History</a>
 
-    {{-- <a href="/passenger/favourit_order">Favourite orders</a> --}}
+    <a href="/passenger/wallet">Passenger wallet</a>
 
     <a href="/passenger/profile">Passenger Profile</a>
 

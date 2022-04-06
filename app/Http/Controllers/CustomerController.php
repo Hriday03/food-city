@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Order;
+use App\WaletHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -79,8 +80,6 @@ class CustomerController extends Controller
             $orders = Order::whereUserId(Auth::id())->where('delivered_at', '=', NULL)->get();
         } else  if ($orderType == 2) {
             $orders = Order::whereUserId(Auth::id())->where('delivered_at', '!=', NULL)->get();
-        } else {
-            $orders = Order::whereUserId(Auth::id())->get();
         }
 
         if (count($orders) > 0) {
@@ -149,7 +148,9 @@ class CustomerController extends Controller
             'address' => 'required|min:5',
             'product'=>'required|min:5',
             'shop_address' => 'required|min:10',
-            'customer_address' => 'required|min:10'
+            'customer_address' => 'required|min:10',
+            'customer_city' => 'required|min:1',
+            'shop_city' => 'required|min:1'
         ]);
 
         if ($validator->fails()) {
@@ -171,11 +172,34 @@ class CustomerController extends Controller
         
         $order->product = $request->get('product');
         $order->shop_address = $request->get('shop_address');
+        $order->shop_city = $request->get('shop_city');
         $order->customer_address = $request->get('customer_address');
+        $order->customer_city = $request->get('customer_city');
 
         $order->user_id = Auth::id();
         
         $order->save();
+
+        return response()->json(null, 200);
+    }
+
+    public function addPoints(Request $request)
+    {
+        $orderId = $request->get('order');
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            $history = new WaletHistory();
+            $history->order_id = $order->id;
+            $history->user_id = $order->partner_user_id;
+            $history->points = 100;
+            $history->save();
+
+            $order->customer_received = now();
+            $order->add_points = 100;
+            $order->save();
+        }
 
         return response()->json(null, 200);
     }

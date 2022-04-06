@@ -1,17 +1,36 @@
 <template>
     <div class="container" style="margin-left:8%">
         <div v-if="!showContent">
-            <div class="form-group">
-                <label for="exampleInputPassword1">Enter your city</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                    placeholder="Enter your city you travel today.!"
-                    v-model="enterCity"
-                    required
-                />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Source city</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="exampleInputPassword1"
+                            placeholder="Source"
+                            v-model="enterSourceCity"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Destination city</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="exampleInputPassword1"
+                            placeholder="Destination"
+                            v-model="enterDestinationCity"
+                            required
+                        />
+                    </div>
+                </div>
             </div>
+
             <button
                 type="submit"
                 class="btn btn-danger"
@@ -23,7 +42,7 @@
                 style="font-size: 24px"
                 v-if="pageProgress"
                 ></i>
-                Fetch Orders
+                Check Orders
             </button>
         </div>
 
@@ -37,7 +56,6 @@
                 <div class="col-4">
                     <select class="form-control" v-model="orderFilter.type" @change="init()">
                         <option value="1">Active Orders</option>
-                        <option value="2">Delivered Orders</option>
                     </select>
                 </div>
             </div>
@@ -50,6 +68,7 @@
                 <div class="col-12">
                     <input type="text" style="height:46px" class="form-control" placeholder="Search by order name" @change="filterOrder()" v-model="orderFilter.name">
                 </div>
+                
                 <div class="col-4" v-show="order.visible" style="margin-top:18px" v-for="(order, index) in allOrders" :key="index">
                     <div class="card" style="margin-bottom:50px">
                         <div class="row no-gutters">
@@ -99,6 +118,58 @@
                     </div>
                     <span v-if="orderLength == 0">Nothing Found</span>
                 </div>
+
+                <br>
+                <div class="col-md-12" v-if="allOrders.length == 0" style="text-align: center">Nothing Found</div>
+            </div>
+        </div>
+
+
+        <!-- Confirmed Orders -->
+        <div v-if="cdOrders.length > 0">
+            <hr>
+            <h4>Confirmed & Delivered Orders</h4>
+            <div style="margin-bottom:50px">
+                <div class="row">
+                    <div class="col-md-4" v-for="(order, key) in cdOrders" :key="key">
+                        <div class="card"  style="padding: 10px">
+                            <h5 class="card-title">
+                                {{key+1}}. {{order.order_name}}
+                            </h5>
+
+                            <label>
+                                <b>Placed:</b> {{order.created_at}}
+                            </label>
+
+                            <label>
+                                <b>Source:</b> {{order.shop_address}}
+                            </label>
+
+                            <label>
+                                <b>Destination:</b> {{order.customer_address}}
+                            </label>
+                        
+                            <label>
+                                <b>Amount:</b> COD
+                            </label>
+
+                            <label>
+                                <b>Status:</b> 
+                                <span v-if="order.created_at && !order.confirm_at">Placed</span>
+                                <span v-if="order.confirm_at && !order.pickup_at">Confirmed</span>
+                                <span v-if="order.pickup_at && !order.delivered_at">Pickuped</span>
+                                <span v-if="order.delivered_at">Delivered</span>
+                            </label>
+
+                            <hr v-if="!order.delivered_at"/>
+                            <button class="btn btn-outline-success" @click="confirmed(order)" v-if="!order.delivered_at">
+                                <span v-if="!order.confirm_at">Confirmed</span>
+                                <span v-if="order.confirm_at && !order.pickup_at && !order.delivered_at">Pickuped</span>
+                                <span v-if="order.confirm_at && order.pickup_at && !order.delivered_at">Delivered</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -106,10 +177,12 @@
 <script>
     import axios from 'axios';
     export default {
+        props:['cdOrders'],
         data(){
             return {
+                enterSourceCity: null,
+                enterDestinationCity: null,
                 showContent: false,
-                enterCity: null,
                 allOrders: [],
                 showLoading: true,
                 orderFilter: {
@@ -136,7 +209,8 @@
                     this.allOrders = [];
                     axios.get('/passenger/search_orders', {
                         params: {
-                            'enterCity': this.enterCity,
+                            'enterSourceCity': this.enterSourceCity,
+                            'enterDestinationCity': this.enterDestinationCity,
                             'order_type': this.orderFilter.type,
                         }
                     }).then(response =>{
@@ -188,6 +262,8 @@
                         icon: "success",
                         buttons: true,
                         dangerMode: true,
+                    }).then(() => {
+                        location.reload();
                     });
                 }).catch((error) => {
                     this.showLoading = false;
@@ -195,8 +271,8 @@
                 });
             },
             fetchOrders() {
-                if (this.enterCity == null) {
-                    alert('Please enter a city');
+                if (this.enterSourceCity == null || this.enterDestinationCity == null) {
+                    alert('Please Enter Source & Destination');
                     return;
                 }
 
